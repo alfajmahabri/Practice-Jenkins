@@ -101,3 +101,13 @@ myself — that is the whole point of the exercise.
 **Root cause:** The Javadoc description had a single line at 202 characters, violating the Checkstyle `LineLength` rule.
 
 **Fix:** Wrapped the Javadoc comment across multiple lines so each is under 120 characters.
+
+### Task 3 — Coverage drop (untested code)
+
+**Setup:** A `clear()` method was added to `InventoryService.java` without a corresponding test.
+
+**Symptom:** *(fill after running pipeline)*
+
+**Root cause:** *(fill after RCA)*
+
+**Fix:** *(fill after fixing)*

@@ -50,4 +50,12 @@ public class InventoryService {
     public Map<String, Integer> snapshot() {
         return Collections.unmodifiableMap(new HashMap<>(stock));
     }
+
+    /**
+     * Removes all stock from inventory. Useful for resetting state between
+     * test runs or after a bulk operation.
+     */
+    public void clear() {
+        stock.clear();
+    }
 }
