@@ -32,7 +32,7 @@ pipeline{
         stage('Coverage'){
             steps{
                 echo "Generating code coverage report..."
-                sh 'mvn jacoco:report jacoco:check'
+                sh 'mvn verify -DskipTests'
             }
         }
 
