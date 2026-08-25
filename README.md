@@ -96,8 +96,8 @@ myself — that is the whole point of the exercise.
 
 **Setup:** A new method `addThreeNumbers` was added to `Calculator.java` with a Javadoc line exceeding 120 characters.
 
-**Symptom:** *(fill after running pipeline)*
+**Symptom:** Validation stage failed — `Line is longer than 120 characters (found 202)` at `Calculator.java:14`.
 
-**Root cause:** *(fill after RCA)*
+**Root cause:** The Javadoc description had a single line at 202 characters, violating the Checkstyle `LineLength` rule.
 
-**Fix:** *(fill after fixing)*
+**Fix:** Wrapped the Javadoc comment across multiple lines so each is under 120 characters.

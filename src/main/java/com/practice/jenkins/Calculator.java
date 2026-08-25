@@ -11,7 +11,9 @@ public class Calculator {
     }
 
     /**
-     * Adds three numbers together. This method was added because the business team asked for a consolidated sum of three separate line items in a single call rather than chaining two add() invocations.
+     * Adds three numbers together. This method was added because the business team asked for a 
+     * consolidated sum of three separate line items in a single call rather 
+     * than chaining two add() invocations.
      */
     public int addThreeNumbers(int a, int b, int c) {
         return a + b + c;
