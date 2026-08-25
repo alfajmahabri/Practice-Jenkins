@@ -86,8 +86,8 @@ myself — that is the whole point of the exercise.
 
 **Setup:** The `FREE_SHIPPING_LIMIT` in `PricingService.java` was changed from `500.0` to `499.0`, shifting the free-shipping boundary.
 
-**Symptom:** *(fill after running pipeline)*
+**Symptom:** `PricingServiceTest.shippingIsChargedBelowTheLimit` failed — expected `40.0` but got `0.0` for `shippingFor(499.99)`.
 
-**Root cause:** *(fill after RCA)*
+**Root cause:** The test data (`499.99`) was between the old limit (`500.0`) and the new limit (`499.0`), so the code correctly treated it as free shipping. The test wasn't updated to match the new config.
 
-**Fix:** *(fill after fixing)*
+**Fix:** Updated the test input from `499.99` to `498.99` so it falls below the new threshold and shipping is charged as expected.

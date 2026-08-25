@@ -37,7 +37,7 @@ class PricingServiceTest {
 
     @Test
     void shippingIsChargedBelowTheLimit() {
-        assertEquals(40.0, pricing.shippingFor(499.99), DELTA);
+        assertEquals(40.0, pricing.shippingFor(498.99), DELTA);
     }
 
     @Test
