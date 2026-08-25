@@ -91,3 +91,13 @@ myself — that is the whole point of the exercise.
 **Root cause:** The test data (`499.99`) was between the old limit (`500.0`) and the new limit (`499.0`), so the code correctly treated it as free shipping. The test wasn't updated to match the new config.
 
 **Fix:** Updated the test input from `499.99` to `498.99` so it falls below the new threshold and shipping is charged as expected.
+
+### Task 2 — Checkstyle violation (line too long)
+
+**Setup:** A new method `addThreeNumbers` was added to `Calculator.java` with a Javadoc line exceeding 120 characters.
+
+**Symptom:** *(fill after running pipeline)*
+
+**Root cause:** *(fill after RCA)*
+
+**Fix:** *(fill after fixing)*
