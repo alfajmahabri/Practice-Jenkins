@@ -10,7 +10,7 @@ pipeline{
 
         stage('Validation'){
             steps{
-                echo 'Validating the code...'
+                echo 'Validating the code'
                 sh 'mvn checkstyle:check -Dcheckstyle.config.location=config/checkstyle.xml'
             }
         }
