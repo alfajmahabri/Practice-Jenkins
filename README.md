@@ -77,3 +77,17 @@ These are the knobs for creating failures worth doing an RCA on:
 
 There is deliberately no `Jenkinsfile` in this repository. I am writing that
 myself — that is the whole point of the exercise.
+
+---
+
+## Scenarios
+
+### Task 1 — Boundary value bug
+
+**Setup:** The `FREE_SHIPPING_LIMIT` in `PricingService.java` was changed from `500.0` to `499.0`, shifting the free-shipping boundary.
+
+**Symptom:** *(fill after running pipeline)*
+
+**Root cause:** *(fill after RCA)*
+
+**Fix:** *(fill after fixing)*
