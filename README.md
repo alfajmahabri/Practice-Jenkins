@@ -116,8 +116,8 @@ myself — that is the whole point of the exercise.
 
 **Setup:** `Calculator.add()` was changed from `int` return to `void` — simulating a refactor that broke callers.
 
-**Symptom:** *(fill after running pipeline)*
+**Symptom:** Test stage failed — callers expected `int` but got `void`.
 
-**Root cause:** *(fill after RCA)*
+**Root cause:** The Compile stage runs `mvn compile` (main code only) and passed because `add()` itself compiled fine. The mismatch only surfaced during `mvn test` when test code was compiled. The pipeline's Compile stage should compile both main and test sources (`mvn compile test-compile`) to catch this earlier.
 
-**Fix:** *(fill after fixing)*
+**Fix:** Reverted `add()` return type back to `int`.
