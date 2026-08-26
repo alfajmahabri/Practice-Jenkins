@@ -133,3 +133,15 @@ myself — that is the whole point of the exercise.
 **Fix:** Install and configure JDK 17 on the Jenkins agent, then set the correct `JAVA_HOME` or Jenkins tool configuration so the pipeline runs with Java 17.
 
 This is a fresh scenario and is not a repeat of the earlier business-rule or boundary-value failures. It is a classic DevOps problem: the code is fine, but the execution environment is wrong.
+
+### Task 6 — Wrong deployment artifact path
+
+**Setup:** The `Package` stage produces a runnable JAR, but the `Deploy` stage points to the wrong filename, such as `target/order-service-1.0.0-SNAPSHOT.jar` instead of the actual `target/order-service-1.0.0.jar`.
+
+**Symptom:** The pipeline reaches the deployment stage, then fails with a Java runtime error or `Error: Unable to access jarfile` because the file path is invalid.
+
+**Root cause:** The deploy command contains a typo or stale artifact name. The build itself succeeded, but the deployment step is using a non-existent artifact.
+
+**Fix:** Correct the artifact path to match the actual packaged JAR, then rerun the pipeline. This is a classic pipeline-level issue: the app builds successfully, but deployment references the wrong artifact.
+
+This is a new failure pattern and is distinct from the earlier boundary-value, logic, coverage, checkstyle, and environment issues.
