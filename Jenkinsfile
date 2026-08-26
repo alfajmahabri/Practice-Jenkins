@@ -1,6 +1,10 @@
 pipeline{
     agent any
 
+    environment{
+        VPS_UPLOAD_URL='http://152.67.0.211/upload'
+    }
+
     tools{
         maven 'Maven 3.6.3'
         jdk 'JDK-21'
