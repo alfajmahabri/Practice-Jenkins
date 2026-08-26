@@ -1,10 +1,6 @@
 pipeline{
     agent any
 
-    environment{
-        VPS_UPLOAD_URL='http://152.67.0.211/upload'
-    }
-
     tools{
         maven 'Maven 3.6.3'
         jdk 'JDK-21'
@@ -50,14 +46,13 @@ pipeline{
         stage('Upload'){
             steps{
                 echo "Uploading to VPS"
-                sh 'curl -f --upload-file target/order-service-1.0.0.jar "$VPS_UPLOAD_URL"'
             }
         }
 
         stage('Deploy'){
             steps{
                 echo "Deploying the application..."
-                sh 'java -jar target/order-service-1.0.0.jar'
+                sh 'cp target/order-service-1.0.0.jar /opt/deployments/live/order-service.jar'
             }
         }
     }

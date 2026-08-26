@@ -157,3 +157,15 @@ This is a new failure pattern and is distinct from the earlier boundary-value, l
 **Fix:** Define `VPS_UPLOAD_URL` in Jenkins with the correct endpoint, or pass it as a secret/parameter to the job before the upload step runs.
 
 This task is intentionally different from the earlier code and artifact-path failures. It represents a very common real-world DevOps issue: the pipeline is fine, but the deploy environment is not configured.
+
+### Task 8 — Missing deployment directory
+
+**Setup:** The `Deploy` stage tries to copy the packaged JAR to `/opt/deployments/live/order-service.jar`, but that directory does not exist on the Jenkins agent or target host.
+
+**Symptom:** The pipeline fails during deployment with an error such as `cp: cannot create regular file '/opt/deployments/live/order-service.jar': No such file or directory`.
+
+**Root cause:** The application artifact is valid and the pipeline reached the deployment stage, but the destination directory was never created or is not mounted on the host.
+
+**Fix:** Create the destination path before copying the artifact, or update the deployment script to use a valid target directory that exists in the environment.
+
+This is a fresh deployment-stage problem and is not a repeat of the earlier code, test, or artifact-name issues.
