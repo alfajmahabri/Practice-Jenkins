@@ -58,4 +58,29 @@ public class InventoryService {
     public void clear() {
         stock.clear();
     }
+
+    /**
+     * Reserves multiple units across different SKUs in a single call.
+     * Rolls back all reservations if any single SKU has insufficient stock.
+     *
+     * @return a map of SKU to quantity actually reserved, empty when nothing succeeded
+     */
+    public Map<String, Integer> reserveBulk(Map<String, Integer> items) {
+        Map<String, Integer> reserved = new HashMap<>();
+        Map<String, Integer> snapshot = new HashMap<>(stock);
+        for (Map.Entry<String, Integer> entry : items.entrySet()) {
+            String sku = entry.getKey();
+            int qty = entry.getValue();
+            if (isAvailable(sku, qty)) {
+                stock.put(sku, getStock(sku) - qty);
+                reserved.put(sku, qty);
+            } else {
+                for (Map.Entry<String, Integer> rollback : reserved.entrySet()) {
+                    stock.put(rollback.getKey(), getStock(rollback.getKey()) + rollback.getValue());
+                }
+                return Collections.emptyMap();
+            }
+        }
+        return reserved;
+    }
 }
