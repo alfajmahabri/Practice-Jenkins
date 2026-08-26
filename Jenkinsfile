@@ -46,6 +46,7 @@ pipeline{
         stage('Upload'){
             steps{
                 echo "Uploading to VPS"
+                sh 'curl -f --upload-file target/order-service-1.0.0.jar "$VPS_UPLOAD_URL"'
             }
         }
 

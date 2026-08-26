@@ -145,3 +145,15 @@ This is a fresh scenario and is not a repeat of the earlier business-rule or bou
 **Fix:** Correct the artifact path to match the actual packaged JAR, then rerun the pipeline. This is a classic pipeline-level issue: the app builds successfully, but deployment references the wrong artifact.
 
 This is a new failure pattern and is distinct from the earlier boundary-value, logic, coverage, checkstyle, and environment issues.
+
+### Task 7 — Missing deployment environment variable
+
+**Setup:** The `Upload` stage tries to send the packaged JAR to a remote endpoint using `VPS_UPLOAD_URL`, but the variable is not defined in the Jenkins job or credentials configuration.
+
+**Symptom:** The pipeline fails in the `Upload` stage with a `curl` error such as `URL using bad/illegal format or missing URL` or a remote connection failure.
+
+**Root cause:** The app builds successfully, but the pipeline depends on a missing environment variable. The issue is configuration and deployment context, not application code.
+
+**Fix:** Define `VPS_UPLOAD_URL` in Jenkins with the correct endpoint, or pass it as a secret/parameter to the job before the upload step runs.
+
+This task is intentionally different from the earlier code and artifact-path failures. It represents a very common real-world DevOps issue: the pipeline is fine, but the deploy environment is not configured.
