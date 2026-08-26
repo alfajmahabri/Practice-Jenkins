@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -65,5 +67,29 @@ class InventoryServiceTest {
     void snapshotIsReadOnly() {
         assertEquals(10, inventory.snapshot().get("SKU-1"));
         assertThrows(UnsupportedOperationException.class, () -> inventory.snapshot().put("SKU-2", 1));
+    }
+
+    @Test
+    void clearRemovesAllStock() {
+        inventory.clear();
+        assertEquals(0, inventory.getStock("SKU-1"));
+    }
+
+    @Test
+    void reserveBulkReservesAllWhenStockIsSufficient() {
+        inventory.addStock("SKU-2", 5);
+        Map<String, Integer> result = inventory.reserveBulk(Map.of("SKU-1", 3, "SKU-2", 2));
+        assertEquals(Map.of("SKU-1", 3, "SKU-2", 2), result);
+        assertEquals(7, inventory.getStock("SKU-1"));
+        assertEquals(3, inventory.getStock("SKU-2"));
+    }
+
+    @Test
+    void reserveBulkRollsBackOnPartialFailure() {
+        inventory.addStock("SKU-2", 5);
+        Map<String, Integer> result = inventory.reserveBulk(Map.of("SKU-1", 3, "SKU-2", 20));
+        assertTrue(result.isEmpty());
+        assertEquals(10, inventory.getStock("SKU-1"));
+        assertEquals(5, inventory.getStock("SKU-2"));
     }
 }

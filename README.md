@@ -104,10 +104,10 @@ myself — that is the whole point of the exercise.
 
 ### Task 3 — Coverage drop (untested code)
 
-**Setup:** A `clear()` method was added to `InventoryService.java` without a corresponding test.
+**Setup:** `clear()` and `reserveBulk()` were added to `InventoryService.java` without tests. The JaCoCo threshold was raised from 70% to 95% to expose the gap.
 
-**Symptom:** *(fill after running pipeline)*
+**Symptom:** Coverage stage failed — `lines covered ratio is 0.82, but expected minimum is 0.95`.
 
-**Root cause:** *(fill after RCA)*
+**Root cause:** `InventoryService` dropped to 48% coverage because `clear()` and `reserveBulk()` (with branching logic) were entirely untested.
 
-**Fix:** *(fill after fixing)*
+**Fix:** Added 3 tests — `clearRemovesAllStock`, `reserveBulkReservesAllWhenStockIsSufficient`, and `reserveBulkRollsBackOnPartialFailure` — covering both happy path and rollback logic.
