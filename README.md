@@ -121,3 +121,15 @@ myself — that is the whole point of the exercise.
 **Root cause:** The Compile stage runs `mvn compile` (main code only) and passed because `add()` itself compiled fine. The mismatch only surfaced during `mvn test` when test code was compiled. The pipeline's Compile stage should compile both main and test sources (`mvn compile test-compile`) to catch this earlier.
 
 **Fix:** Reverted `add()` return type back to `int`.
+
+### Task 5 — JDK mismatch in Jenkins
+
+**Setup:** The project targets Java 17 (`maven.compiler.release` is set to `17` in `pom.xml`), but the Jenkins agent is configured to use JDK 11 or the Java 17 tool is missing.
+
+**Symptom:** The build fails during `Compile` or `Test` with errors like `error: invalid target release: 17` or `release version 17 not supported`.
+
+**Root cause:** The Jenkins job is running Maven on the wrong Java version. The code is valid for Java 17, but the runner does not have the correct JDK installed or configured.
+
+**Fix:** Install and configure JDK 17 on the Jenkins agent, then set the correct `JAVA_HOME` or Jenkins tool configuration so the pipeline runs with Java 17.
+
+This is a fresh scenario and is not a repeat of the earlier business-rule or boundary-value failures. It is a classic DevOps problem: the code is fine, but the execution environment is wrong.
