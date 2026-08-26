@@ -60,12 +60,12 @@ public class Order {
             return false;
         }
         Order that = (Order) other;
-        return sku.equals(that.sku);
+        return id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku);
+        return Objects.hash(id);
     }
 
     @Override
