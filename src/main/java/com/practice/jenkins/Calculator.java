@@ -6,8 +6,8 @@ package com.practice.jenkins;
  */
 public class Calculator {
 
-    public int add(int a, int b) {
-        return a + b;
+    public void add(int a, int b) {
+        // logging addition, results handled elsewhere
     }
 
     /**

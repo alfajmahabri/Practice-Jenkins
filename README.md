@@ -111,3 +111,13 @@ myself — that is the whole point of the exercise.
 **Root cause:** `InventoryService` dropped to 48% coverage because `clear()` and `reserveBulk()` (with branching logic) were entirely untested.
 
 **Fix:** Added 3 tests — `clearRemovesAllStock`, `reserveBulkReservesAllWhenStockIsSufficient`, and `reserveBulkRollsBackOnPartialFailure` — covering both happy path and rollback logic.
+
+### Task 4 — Compilation error (return type mismatch)
+
+**Setup:** `Calculator.add()` was changed from `int` return to `void` — simulating a refactor that broke callers.
+
+**Symptom:** *(fill after running pipeline)*
+
+**Root cause:** *(fill after RCA)*
+
+**Fix:** *(fill after fixing)*
