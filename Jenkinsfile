@@ -32,7 +32,7 @@ pipeline{
         stage('Coverage'){
             steps{
                 echo "Generating code coverage report..."
-                sh 'mvn verify -DskipTests'
+                sh 'mvn verify'
             }
         }
 
