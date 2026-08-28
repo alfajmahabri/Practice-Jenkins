@@ -69,3 +69,4 @@ pipeline{
             echo 'Build failed. Please check the logs.'
         }
 }
+}
