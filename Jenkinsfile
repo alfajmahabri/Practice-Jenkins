@@ -52,7 +52,6 @@ pipeline{
         stage('Deploy'){
             steps{
                 echo "Deploying the application..."
-                sh 'cp target/order-service-1.0.0.jar /opt/deployments/live/order-service.jar'
             }
         }
     }
