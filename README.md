@@ -187,21 +187,19 @@ inventory preservation, batch processing, read-only results, and operational
 metrics. This gives the repository a more realistic service layer while keeping
 the Jenkins pipeline unchanged until the failure is understood.
 
-### Task 9 — Batch revenue includes rejected orders
+### Task 9 — Batch status count misclassifies orders
 
 **Setup:** A change is made to the new batch-processing code so
-`OrderWorkflowService.acceptedRevenue()` adds every processed order total,
-including rejected orders.
+`OrderWorkflowService.countByStatus()` counts accepted results regardless of
+the requested status.
 
 **Symptom:** The Test stage fails in `OrderWorkflowServiceTest` because the
-reported revenue is higher than the value of orders that were actually
-accepted.
+rejected-order count is reported as the accepted-order count.
 
-**Root cause:** The revenue calculation does not filter results by
-`OrderStatus.ACCEPTED`. A rejected order must never contribute to sales
-revenue.
+**Root cause:** The status calculation ignores its `status` argument and uses
+the accepted predicate unconditionally.
 
-**Fix:** Restore the accepted-status check in `acceptedRevenue()`, then rerun
+**Fix:** Compare each result's status with the requested `status`, then rerun
 the tests and the full Maven verification lifecycle.
 
 This is a new application-layer scenario. It is not a repeat of the earlier

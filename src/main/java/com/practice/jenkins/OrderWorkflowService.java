@@ -28,14 +28,12 @@ public final class OrderWorkflowService {
     public double acceptedRevenue(List<ProcessedOrder> results) {
         double revenue = 0.0;
         for (ProcessedOrder result : results) {
-            if (result.isAccepted()) {
-                revenue += result.getTotal();
-            }
+            revenue += result.getTotal();
         }
         return revenue;
     }
 
     public long countByStatus(List<ProcessedOrder> results, OrderStatus status) {
-        return results.stream().filter(result -> result.getStatus() == status).count();
+        return results.stream().filter(ProcessedOrder::isAccepted).count();
     }
 }

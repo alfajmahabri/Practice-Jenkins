@@ -44,12 +44,13 @@ class OrderWorkflowServiceTest {
         InventoryService inventory = inventoryWith("SKU-1", 3);
         List<Order> orders = List.of(
                 new Order("ORD-1", "SKU-1", 2, 45.0),
-                new Order("ORD-2", "SKU-1", 2, 45.0));
+            new Order("ORD-2", "SKU-1", 2, 45.0),
+            new Order("ORD-3", "SKU-1", 1, 45.0));
 
         List<ProcessedOrder> results = workflow.processAll(orders, inventory, pricing);
 
-        assertEquals(2, results.size());
-        assertEquals(1, workflow.countByStatus(results, OrderStatus.ACCEPTED));
+        assertEquals(3, results.size());
+        assertEquals(2, workflow.countByStatus(results, OrderStatus.ACCEPTED));
         assertEquals(1, workflow.countByStatus(results, OrderStatus.REJECTED));
         assertEquals(146.20, workflow.acceptedRevenue(results), 0.0001);
     }
