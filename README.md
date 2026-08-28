@@ -169,3 +169,41 @@ This task is intentionally different from the earlier code and artifact-path fai
 **Fix:** Create the destination path before copying the artifact, or update the deployment script to use a valid target directory that exists in the environment.
 
 This is a fresh deployment-stage problem and is not a repeat of the earlier code, test, or artifact-name issues.
+
+## Expanded application architecture
+
+The project now includes a small order-processing workflow around the original
+inventory and pricing services:
+
+- `OrderWorkflowService` coordinates reservations, pricing, single-order
+  decisions, batch processing, revenue totals, and status counts.
+- `ProcessedOrder` records the order, outcome, payable total, and rejection
+  reason.
+- `OrderStatus` provides explicit accepted and rejected outcomes.
+- `OrderMetrics` calculates acceptance rate and average accepted order value.
+
+The new classes have focused tests for accepted orders, rejected orders,
+inventory preservation, batch processing, read-only results, and operational
+metrics. This gives the repository a more realistic service layer while keeping
+the Jenkins pipeline unchanged until the failure is understood.
+
+### Task 9 — Batch revenue includes rejected orders
+
+**Setup:** A change is made to the new batch-processing code so
+`OrderWorkflowService.acceptedRevenue()` adds every processed order total,
+including rejected orders.
+
+**Symptom:** The Test stage fails in `OrderWorkflowServiceTest` because the
+reported revenue is higher than the value of orders that were actually
+accepted.
+
+**Root cause:** The revenue calculation does not filter results by
+`OrderStatus.ACCEPTED`. A rejected order must never contribute to sales
+revenue.
+
+**Fix:** Restore the accepted-status check in `acceptedRevenue()`, then rerun
+the tests and the full Maven verification lifecycle.
+
+This is a new application-layer scenario. It is not a repeat of the earlier
+shipping boundary, equality, Checkstyle, coverage, JDK, artifact path, missing
+environment, or missing-directory exercises.
