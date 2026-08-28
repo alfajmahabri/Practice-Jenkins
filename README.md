@@ -205,3 +205,24 @@ the tests and the full Maven verification lifecycle.
 This is a new application-layer scenario. It is not a repeat of the earlier
 shipping boundary, equality, Checkstyle, coverage, JDK, artifact path, missing
 environment, or missing-directory exercises.
+
+### Task 10 — Jenkinsfile syntax validation failure
+
+**Setup:** A closing brace is accidentally removed from the declarative
+`Jenkinsfile`.
+
+**Symptom:** Jenkins rejects the pipeline before any stage starts, with a
+Groovy parser or pipeline compilation error such as `unexpected EOF` or
+`expecting '}'`.
+
+**Root cause:** The pipeline definition is not syntactically complete. This is
+different from a failed build stage: Maven, tests, and the application never
+run because Jenkins cannot compile the pipeline script.
+
+**Fix:** Compare the block structure of `pipeline`, `stages`, `post`, and each
+stage. Restore the missing closing brace, use Jenkins Pipeline Syntax or a
+pipeline linter, and rerun the job.
+
+This is a parser-level Jenkins failure. It is not a repeat of an application
+logic failure, test assertion, artifact path issue, environment issue, or
+deployment-target issue.
