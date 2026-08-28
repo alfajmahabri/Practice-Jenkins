@@ -58,9 +58,9 @@ pipeline{
 
     post{
         always{
+            cleanWs()
             junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
             archiveArtifacts artifacts: 'target/site/jacoco/**', allowEmptyArchive: true
-            cleanWs()
         }
         success{
             echo 'Build completed successfully!'

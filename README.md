@@ -226,3 +226,23 @@ pipeline linter, and rerun the job.
 This is a parser-level Jenkins failure. It is not a repeat of an application
 logic failure, test assertion, artifact path issue, environment issue, or
 deployment-target issue.
+
+### Task 11 — Post-build reports deleted before archiving
+
+**Setup:** `cleanWs()` is moved to the beginning of the `post { always { ... } }`
+block, before JUnit results and JaCoCo reports are collected.
+
+**Symptom:** The build may complete its stages successfully, but Jenkins shows
+missing test reports or archived coverage artifacts. With no reports left in
+the workspace, `junit` may find nothing and `archiveArtifacts` may create an
+empty archive.
+
+**Root cause:** Workspace cleanup runs before post-build evidence is published.
+The cleanup step removes `target/surefire-reports` and `target/site/jacoco`.
+
+**Fix:** Publish JUnit results and archive coverage artifacts first, then call
+`cleanWs()` as the final action in the `always` block. Preserve evidence before
+deleting the workspace.
+
+This is a new post-build observability failure, not a test, application,
+artifact-name, deployment, environment, or Jenkinsfile-parser failure.
