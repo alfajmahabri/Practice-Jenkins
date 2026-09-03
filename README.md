@@ -321,3 +321,26 @@ fresh scenario unrelated to all previous issue types in this project.
 This is a new repository and pipeline setup issue: branch drift. It is not a
 repeat of the earlier Java, test, code-quality, coverage, JDK, deployment, or
 filesystem problems.
+
+### Task 15 — Jenkins ignores pushes because the webhook is configured for the wrong event
+
+**Setup:** The GitHub repository is configured to send push events to Jenkins,
+but the job is set to build only on pull request events or only on `master`
+while the repository is using `main`.
+
+**Symptom:** A new commit is pushed to the repository, but Jenkins does not
+start a build. The code is updated in GitHub, yet the pipeline remains idle.
+
+**Root cause:** The Jenkins GitHub trigger or branch filter does not match the
+actual repository event and branch pattern. This is a CI trigger configuration
+issue, not a code compile issue, a JDK issue, a test assertion, a coverage gate,
+a deployment path problem, or a filesystem failure.
+
+**Fix:** Update the GitHub webhook event type and branch filter to match the
+repository's actual workflow, then trigger a new push or rebuild the job. This
+is a pipeline-trigger configuration issue and is distinct from every earlier
+failure mode in the project.
+
+This is a new automation-trigger problem: event and branch mismatch. It is not
+a repeat of the previously documented Java, JDK, test, coverage, deployment,
+filesystem, or branch-rename issues.
