@@ -297,3 +297,27 @@ This is a new class of failure: flaky state leakage across test execution
 order. It is different from all previous problems in this repository and is a
 realistic production bug that often shows up only under full-suite or parallel
 runs.
+
+### Task 14 — Branch ref drift after repository rename
+
+**Setup:** A Jenkins multibranch or standard pipeline is configured to build a
+branch named `release-2.0`, but the repository branch is renamed to `main` or
+`production` without updating the Jenkins branch specifier or checkout settings.
+
+**Symptom:** The pipeline fails before build stages start with a Git error such
+as `fatal: couldn't find remote ref release-2.0`, `Could not find any branch`
+matching the checkout, or a missing revision during `git fetch`.
+
+**Root cause:** The source control branch reference in Jenkins no longer matches
+the actual repository state. This is a source control and job configuration
+issue, not a JDK problem, application logic bug, test assertion, coverage gate,
+Checkstyle violation, deployment path issue, or package artifact failure.
+
+**Fix:** Update the Jenkins branch specifier, job configuration, or SCM
+settings to the current branch name, refresh the credentials or webhook trigger,
+and rerun the job. This is a repository-branch configuration failure and is a
+fresh scenario unrelated to all previous issue types in this project.
+
+This is a new repository and pipeline setup issue: branch drift. It is not a
+repeat of the earlier Java, test, code-quality, coverage, JDK, deployment, or
+filesystem problems.
