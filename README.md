@@ -246,3 +246,28 @@ deleting the workspace.
 
 This is a new post-build observability failure, not a test, application,
 artifact-name, deployment, environment, or Jenkinsfile-parser failure.
+
+### Task 12 — Parallel stage writes to the same report path
+
+**Setup:** A Jenkins pipeline is updated to run a `unit-tests` stage and a
+`coverage-report` stage in parallel. Both stages write to the same output file,
+for example `target/reports/summary.txt` or `target/site/coverage/summary.json`.
+
+**Symptom:** The pipeline may fail intermittently with `Permission denied`,
+`No such file or directory`, or stale/corrupted report output. One stage may
+report success while the other overwrites the same artifact at the same time.
+
+**Root cause:** The pipeline is using a shared workspace and shared artifact path
+without isolating output directories. Parallel execution introduces a race
+condition where file writes overwrite each other, and later archive or publish
+steps consume the wrong data.
+
+**Fix:** Give each parallel stage a unique output directory or a stage-specific
+workspace path, such as `target/unit-reports` and `target/coverage-reports`,
+and only archive the correct files after the stage completes. This is a
+concurrency and filesystem-isolation issue, not a Java logic problem, JDK issue,
+Maven configuration problem, or deployment failure.
+
+This is a fresh pipeline-parallelism failure and is distinct from all earlier
+boundary-value, checkstyle, coverage, compile, environment, artifact-path,
+deployment, directory, post-build, and parser issues.
