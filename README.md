@@ -271,3 +271,29 @@ Maven configuration problem, or deployment failure.
 This is a fresh pipeline-parallelism failure and is distinct from all earlier
 boundary-value, checkstyle, coverage, compile, environment, artifact-path,
 deployment, directory, post-build, and parser issues.
+
+### Task 13 — Shared mutable state causes order-dependent test failures
+
+**Setup:** A new singleton cache is added to the pricing or order workflow layer
+to memoise expensive calculations. It is stored as a static field and never
+cleared between runs.
+
+**Symptom:** The build passes when tests are run individually, but fails when the
+full suite runs in a different order. A later test can see values produced by an
+earlier test, resulting in wrong totals, stale discounts, or inconsistent stock
+reservations.
+
+**Root cause:** The program is using shared mutable state across requests and
+across test cases. Because the cache is static and not reset, test order leaks
+into the application state, which makes the suite flaky and non-deterministic.
+
+**Fix:** Remove the shared static cache or scope it to a request instance,
+explicitly clear it before each test or each calculation cycle, and rerun the
+full Maven verification. This is a state-management bug, not a boundary-value,
+Checkstyle, coverage, JDK, artifact, deployment, directory, parser, or parallel-
+stage issue.
+
+This is a new class of failure: flaky state leakage across test execution
+order. It is different from all previous problems in this repository and is a
+realistic production bug that often shows up only under full-suite or parallel
+runs.
